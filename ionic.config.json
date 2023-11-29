@@ -1,0 +1,7 @@
+{
+  "name": "RickandMort",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
