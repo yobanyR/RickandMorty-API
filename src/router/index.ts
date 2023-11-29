@@ -1,39 +1,33 @@
+// Importa funciones y tipos necesarios de @ionic/vue-router y vue-router
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import TabsPage from '../views/TabsPage.vue'
 
+// Define la configuración de las rutas como un array de objetos RouteRecordRaw
 const routes: Array<RouteRecordRaw> = [
   {
+    // Ruta raíz redirige a '/characters'
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/characters',
   },
   {
-    path: '/tabs/',
-    component: TabsPage,
-    children: [
-      {
-        path: '',
-        redirect: '/tabs/tab1'
-      },
-      {
-        path: 'tab1',
-        component: () => import('@/views/Tab1Page.vue')
-      },
-      {
-        path: 'tab2',
-        component: () => import('@/views/Tab2Page.vue')
-      },
-      {
-        path: 'tab3',
-        component: () => import('@/views/Tab3Page.vue')
-      }
-    ]
-  }
-]
+    // Ruta '/characters' con nombre 'characters', carga el componente 'CharactersViws.vue'
+    path: '/characters',
+    name: 'characters',
+    component: () => import('@/views/CharactersViws.vue'), 
+  },
+  {
+    // Ruta dinámica '/character/:id' con nombre 'characterDetail', carga el componente 'CharacterDetailViews.vue'
+    path: '/characters/:id',
+    name: 'characterDetail',
+    component: () => import('@/views/CharacterDetailViews.vue'),
+  },
+];
 
+// Crea una instancia del enrutador con la configuración de rutas y tipo de historial web
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+// Exporta la instancia del enrutador para que pueda ser utilizada en la aplicación
+export default router;
