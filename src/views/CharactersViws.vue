@@ -1,10 +1,10 @@
 <template>
-  <!-- Define la estructura de la página usando los componentes de Ionic -->
-  <ion-page>
+  <ion-page >
+    <!-- Define la estructura de la página usando los componentes de Ionic -->
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="success">
         <!-- Título de la barra de herramientas -->
-        <ion-title>Rick and Morty Characters</ion-title>
+        <ion-title class="title-font">The Rick and Morty API</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -15,43 +15,49 @@
 </template>
 
 <script lang="ts">
-// Importa la función 'defineComponent' de Vue y el servicio 'RickAndMortyService'
+// Importa los componentes necesarios de Ionic y Vue
 import { defineComponent } from 'vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
 import RickAndMortyService from '../services/RickAndMortyService';
-// Importa el componente 'CharacterList'
 import CharacterList from '../components/CharacterList.vue';
 
-// Exporta un componente de Vue
 export default defineComponent({
   components: {
-    // Registra el componente 'CharacterList' para ser utilizado en este componente
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
     CharacterList,
   },
   data() {
-    // Define el estado local del componente, en este caso, un array vacío para almacenar los personajes
     return {
       characters: [],
     };
   },
   mounted() {
-    // En el evento 'mounted', después de que el componente se ha montado en el DOM...
     RickAndMortyService.getCharacters()
-      // ...llama al método 'getCharacters' del servicio 'RickAndMortyService' para obtener la lista de personajes
       .then(characters => {
-        // Actualiza el array 'characters' con la respuesta obtenida
-        this.characters = characters; 
+        this.characters = characters;
       })
-      // Maneja cualquier error que pueda ocurrir durante la obtención de personajes
       .catch(error => {
         console.error('Error fetching characters:', error);
       });
   },
   methods: {
-    // Define un método 'showCharacterDetail' que toma un 'characterId' como parámetro
     showCharacterDetail(characterId: any) {
-      // Navega a la ruta '/character/:id' utilizando el enrutador y pasa el 'characterId' como parámetro
-      this.$router.push(`/character/${characterId}`);
+      this.$router.push(`/characters/${characterId}`);
     },
   },
 });
 </script>
+
+<style scoped>
+.title-font {
+  font-family: 'Pacifico', cursive;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 20px;
+  color: white;
+}
+</style>
