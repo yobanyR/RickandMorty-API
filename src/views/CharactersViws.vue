@@ -4,10 +4,10 @@
     <ion-header>
       <ion-toolbar color="success">
         <!-- Título de la barra de herramientas -->
-        <ion-title class="title-font">The Rick and Morty API</ion-title>
+        <ion-title class="title-font">Rick and Morty API</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
+    <ion-content >
       <!-- Utiliza el componente 'CharacterList' pasándole la lista de personajes y configurando un evento 'character-click' -->
       <character-list :characters="characters" @character-click="showCharacterDetail" />
     </ion-content>
@@ -18,8 +18,8 @@
 // Importa los componentes necesarios de Ionic y Vue
 import { defineComponent } from 'vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import RickAndMortyService from '../services/RickAndMortyService';
-import CharacterList from '../components/CharacterList.vue';
+import RickAndMortyService from '../services/CustomRickAndMortyService';
+import CharacterList from '../components/CustomCharacterList.vue';
 
 export default defineComponent({
   components: {
@@ -36,7 +36,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    RickAndMortyService.getCharacters()
+    RickAndMortyService.fetchCharacters()
       .then(characters => {
         this.characters = characters;
       })

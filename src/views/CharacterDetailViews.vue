@@ -1,27 +1,40 @@
 <template>
-  <!-- Define la estructura de la página con un encabezado y contenido -->
   <ion-page>
     <ion-header>
-      <!-- Define la barra de herramientas con un título y botón de regreso -->
-      <ion-toolbar color="dark">
-        <ion-title class="title-font">Character Detail</ion-title>
+      <ion-toolbar color="primary">
+        <ion-title class="title-font"> Detail</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <!-- Renderiza el componente 'CharacterDetails' y pasa el personaje como propiedad -->
       <character-details :character="character" />
-      <!-- Botón de regreso -->
     </ion-content>
-    <ion-button @click="goToHome" color="primary">Regresar</ion-button>
+    <button @click="goToEpisodio" class="cssbuttons-io-button">
+      Ver Episodios
+      <div class="icon">
+        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+            fill="currentColor"></path>
+        </svg>
+      </div>
+    </button>
+    <button @click="goToHome" class="cssbuttons-io-button custom-back-button">
+      Regresar
+      <div class="icon">
+        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+            fill="currentColor"></path>
+        </svg>
+      </div>
+    </button>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonTitle, IonToolbar, IonPage, IonHeader, IonContent, IonButton } from "@ionic/vue";
-
-// Importa el servicio RickAndMortyService y el componente CharacterDetails
-import RickAndMortyService from '../services/RickAndMortyService';
-import CharacterDetails from '../components/CharacterDetails.vue';
+import { IonTitle, IonToolbar, IonPage, IonHeader, IonContent } from "@ionic/vue";
+import RickAndMortyService from '../services/CustomRickAndMortyService';
+import CharacterDetails from '../components/CustomCharacterDetails.vue';
 
 export default {
   components: {
@@ -31,38 +44,34 @@ export default {
     IonHeader,
     IonContent,
     CharacterDetails,
-    IonButton,
-
   },
-
-  // Define el estado de datos local para almacenar la información del personaje
   data() {
     return {
-      character: {}, // Asegúrate de que este objeto tenga la estructura correcta
+      character: {id: null},
     };
   },
   methods: {
     goToHome() {
-      this.$router.push('/'); // Reemplaza '/home' con la ruta de inicio que desees
+      this.$router.push('/');
+    },
+    goToEpisodio() {
+      this.$router.push(`/Episodio/${this.character.id}`);
     },
   },
-  // El gancho 'created' se ejecuta después de que se ha creado la instancia del componente
   async created() {
     try {
-    const characterId = this.$route.params.id;
-    const character = await RickAndMortyService.getCharacterById(characterId);
+      const characterId = this.$route.params.id;
+      const character = await RickAndMortyService.fetchCharacterById(characterId);
 
-    if (character) {
-      this.character = character;
-      console.log(this.character);
-    } else {
-      console.error('Character not found');
+      if (character) {
+        this.character = character;
+      } else {
+        console.error('Character not found');
+      }
+    } catch (error) {
+      console.error('Error fetching character details:', error);
     }
-  } catch (error) {
-    console.error('Error fetching character details:', error);
-  }
   },
-
 };
 </script>
 
@@ -72,23 +81,71 @@ export default {
   font-weight: bold;
   font-style: italic;
   font-size: 25px;
-  /* Ajusta el tamaño del título según tus preferencias */
   color: white;
-  /* Cambia el color del texto a blanco */
 }
 
 .custom-back-button {
   border: 1px solid white;
-  /* Ajusta el grosor del borde */
   border-radius: 15px;
-  /* Ajusta el radio de borde para hacerlo más pequeño y redondeado */
   padding: 4px;
-  /* Ajusta el relleno para hacer el botón más pequeño */
 }
 
-/* Estilo para el botón de regreso */
 .back-button {
   align-self: flex-end;
-  /* Posiciona el botón al final del contenedor (parte inferior) */
   margin: 16px;
-}</style>
+}
+
+.cssbuttons-io-button {
+  background: #0625d8;
+  color: white;
+  font-family: inherit;
+  padding: 0.35em;
+  padding-left: 1.2em;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 0.9em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #714da6;
+  overflow: hidden;
+  position: relative;
+  height: 2.8em;
+  padding-right: 3.3em;
+  cursor: pointer;
+}
+
+.cssbuttons-io-button .icon {
+  background: white;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #1806e4;
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #4c08b3;
+}
+
+.cssbuttons-io-button:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+  transform: scale(0.95);
+}
+</style>
